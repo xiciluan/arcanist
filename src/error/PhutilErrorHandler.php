@@ -180,10 +180,10 @@ final class PhutilErrorHandler extends Phobject {
    * @return void
    * @task internal
    */
-  public static function handleError($num, $str, $file, $line, $ctx) {
+  public static function handleError($num, $str, $file, $line, $ctx = null) {
 
     foreach (self::$traps as $trap) {
-      $trap->addError($num, $str, $file, $line, $ctx);
+      $trap->addError($num, $str, $file, $line);
     }
 
     if ((error_reporting() & $num) == 0) {
@@ -214,7 +214,6 @@ final class PhutilErrorHandler extends Phobject {
         array(
           'file'       => $file,
           'line'       => $line,
-          'context'    => $ctx,
           'error_code' => $num,
           'trace'      => $trace,
         ));
@@ -425,16 +424,6 @@ final class PhutilErrorHandler extends Phobject {
           PhutilReadableSerializer::printShort($value),
           $metadata['file'],
           $metadata['line']);
-
-        $metadata['default_message'] = $default_message;
-        error_log($default_message);
-        break;
-      case self::DEPRECATED:
-        $default_message = sprintf(
-          '[%s] DEPRECATED: %s is deprecated; %s',
-          $timestamp,
-          $value,
-          $metadata['why']);
 
         $metadata['default_message'] = $default_message;
         error_log($default_message);

@@ -812,7 +812,7 @@ abstract class ArcanistWorkflow extends Phobject {
     return $this->workingDirectory;
   }
 
-  final private function setParentWorkflow($parent_workflow) {
+  private function setParentWorkflow($parent_workflow) {
     $this->parentWorkflow = $parent_workflow;
     return $this;
   }
@@ -1318,6 +1318,9 @@ abstract class ArcanistWorkflow extends Phobject {
 
         $commit_message = $this->newInteractiveEditor($template)
           ->setName(pht('commit-message'))
+          ->setTaskMessage(pht(
+            'Supply commit message for uncommitted changes, then save and '.
+            'exit.'))
           ->editInteractively();
 
         if ($commit_message === $template) {
@@ -1461,7 +1464,7 @@ abstract class ArcanistWorkflow extends Phobject {
     ));
   }
 
-  final private function loadBundleFromConduit(
+  private function loadBundleFromConduit(
     ConduitClient $conduit,
     $params) {
 
